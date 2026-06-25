@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_payroll_structure_list" model="ir.ui.view">
+        <field name="name">payroll.structure.list</field>
+        <field name="model">payroll.structure</field>
+        <field name="arch" type="xml">
+            <list string="Salary Structures">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_payroll_structure_form" model="ir.ui.view">
+        <field name="name">payroll.structure.form</field>
+        <field name="model">payroll.structure</field>
+        <field name="arch" type="xml">
+            <form string="Salary Structure">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Base Structure"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Salary Rules" name="salary_rules">
+                            <field name="rule_ids" readonly="not id">
+                                <list string="Salary Rules">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="code"/>
+                                    <field name="category"/>
+                                    <field name="amount_type"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Description" name="note">
+                            <field name="note" placeholder="Internal remarks or description..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_payroll_structure" model="ir.actions.act_window">
+        <field name="name">Salary Structures</field>
+        <field name="res_model">payroll.structure</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_payroll_structure_action"
+              name="Structures"
+              parent="menu_payroll_salary_structure"
+              action="action_payroll_structure"
+              sequence="20"/>
+
+</odoo>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_payroll_rule_list" model="ir.ui.view">
+        <field name="name">payroll.rule.list</field>
+        <field name="model">payroll.rule</field>
+        <field name="arch" type="xml">
+            <list string="Salary Rules">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="struct_id"/>
+                <field name="category"/>
+                <field name="amount_type"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_payroll_rule_form" model="ir.ui.view">
+        <field name="name">payroll.rule.form</field>
+        <field name="model">payroll.rule</field>
+        <field name="arch" type="xml">
+            <form string="Salary Rule">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. Basic Salary"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="struct_id"/>
+                            <field name="category"/>
+                        </group>
+                        <group>
+                            <field name="sequence"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Condition" name="condition">
+                            <group>
+                                <field name="condition_field" widget="ace" options="{'mode': 'python'}"/>
+                            </group>
+                        </page>
+                        <page string="Computation" name="computation">
+                            <group>
+                                <field name="amount_type"/>
+                                <field name="amount_fix" invisible="amount_type != 'fixed'"/>
+                                <field name="amount_percentage" invisible="amount_type != 'percentage'"/>
+                                <field name="amount_python_code" invisible="amount_type != 'code'" widget="ace" options="{'mode': 'python'}"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_payroll_rule" model="ir.actions.act_window">
+        <field name="name">Salary Rules</field>
+        <field name="res_model">payroll.rule</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_payroll_rule_sub"
+              name="Rules"
+              parent="menu_payroll_salary_structure"
+              action="action_payroll_rule"
+              sequence="30"/>
+
+</odoo>

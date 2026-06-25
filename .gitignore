@@ -1,0 +1,13 @@
+# PyCharm files
+.idea/
+*.iml
+
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Odoo log and sessions
+*.log
+*.conf

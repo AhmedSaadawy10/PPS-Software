@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_custom_payroll_root"
+              name="Custom Payroll"
+              sequence="60"
+              web_icon="custom_payroll,static/description/icon.png"/>
+
+    <menuitem id="hr.menu_hr_employee_payroll"
+              name="Employee"
+              parent="menu_custom_payroll_root"
+              sequence="5"/>
+
+    <menuitem id="menu_payroll_contract"
+              name="Contract"
+              parent="menu_custom_payroll_root"
+              sequence="10"/>
+
+     <menuitem id="menu_payroll_salary_structure"
+              name="Salary Structure"
+              parent="menu_custom_payroll_root"
+              sequence="15"/>
+</odoo>

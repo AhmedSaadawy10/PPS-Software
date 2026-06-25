@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--list view-->
+    <record id="view_payroll_contract_list" model="ir.ui.view">
+        <field name="name">x_payroll.contract.list</field>
+        <field name="model">x_payroll.contract</field>
+        <field name="arch" type="xml">
+            <list string="Contracts" decoration-info="state == 'draft'" decoration-success="state == 'running'" decoration-muted="state == 'expired'">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="wage"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-success="state == 'running'"/>
+            </list>
+        </field>
+    </record>
+
+<!--    form view-->
+    <record id="view_payroll_contract_form" model="ir.ui.view">
+        <field name="name">x_payroll.contract.form</field>
+        <field name="model">x_payroll.contract</field>
+        <field name="arch" type="xml">
+            <form string="Contract">
+                <header>
+                    <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group name="salary_and_employee">
+                            <field name="employee_id" readonly="state != 'draft'"/>
+
+                            <label for="wage"/>
+                            <div class="o_row mw-50" name="wage">
+                                <field name="wage" class="oe_inline o_hr_narrow_field" nolabel="1" readonly="state == 'cancelled'"/>
+                                <div class="mb-3" name="wage_period_label">/ month</div>
+                            </div>
+
+                            <field name="currency_id" invisible="True"/>
+                        </group>
+                        <group>
+                            <field name="date_start" readonly="state != 'draft'"/>
+                            <field name="date_end" readonly="state in ['expired', 'cancelled']"/>
+                            <field name="company_id" groups="base.group_multi_company" invisible="true"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+<!--    action window-->
+    <record id="action_payroll_contract" model="ir.actions.act_window">
+        <field name="name">Contracts</field>
+        <field name="res_model">x_payroll.contract</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first payroll contract!
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_payroll_contract_action"
+              name="Contracts"
+              parent="menu_payroll_contract"
+              action="action_payroll_contract"
+              sequence="10"/>
+
+</odoo>
