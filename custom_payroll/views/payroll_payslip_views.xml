@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- List View -->
+    <record id="view_payroll_payslip_list" model="ir.ui.view">
+        <field name="name">payroll.payslip.list</field>
+        <field name="model">payroll.payslip</field>
+        <field name="arch" type="xml">
+            <list string="Employee Payslips">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'"
+                       decoration-warning="state == 'verify'" decoration-success="state == 'done'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_payroll_payslip_form" model="ir.ui.view">
+        <field name="name">payroll.payslip.form</field>
+        <field name="model">payroll.payslip</field>
+        <field name="arch" type="xml">
+            <form string="Employee Payslip">
+                <header>
+                    <button name="action_payslip_verify" string="Compute Sheet" type="object"
+                            invisible="state != 'draft'" class="oe_highlight"/>
+                    <button name="action_payslip_done" string="Verify" type="object"
+                            invisible="state != 'verify'" class="oe_highlight"/>
+                    <button name="action_payslip_cancel" string="Cancel" type="object"
+                            invisible="state not in ['draft', 'verify']"/>
+                    <button name="action_payslip_draft" string="Set to Draft" type="object"
+                            invisible="state != 'cancel'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,verify,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="employee_id" readonly="state != 'draft'"/>
+                            <field name="contract_id" readonly="state != 'draft'"/>
+                            <field name="structure_id" readonly="state != 'draft'"/>
+                        </group>
+                        <group>
+                            <field name="date_from" readonly="state != 'draft'"/>
+                            <field name="date_to" readonly="state != 'draft'"/>
+                            <field name="gross_total"/>
+                            <field name="net_total"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Salary Computation" name="salary_computation">
+                            <field name="line_ids">
+                                <list string="Payslip Lines" create="false" delete="false">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="code"/>
+                                    <field name="category"/>
+                                    <field name="total" sum="Total"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Window Action -->
+    <record id="action_payroll_payslip" model="ir.actions.act_window">
+        <field name="name">Employee Payslips</field>
+        <field name="res_model">payroll.payslip</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Menu Item -->
+    <menuitem id="menu_payroll_payslip_action"
+              name="Payslips"
+              parent="menu_payroll_payslip"
+              action="action_payroll_payslip"
+              sequence="30"/>
+
+</odoo>

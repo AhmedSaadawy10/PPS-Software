@@ -9,5 +9,13 @@
             <field name="company_id" eval="False"/>
         </record>
 
+        <record id="seq_payroll_payslip" model="ir.sequence">
+            <field name="name">Employee Payslip Sequence</field>
+            <field name="code">payroll.payslip</field>
+            <field name="prefix">SLIP</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
     </data>
 </odoo>

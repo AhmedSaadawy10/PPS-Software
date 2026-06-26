@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from odoo.tools.translate import _
+import re
 
 
 class PayrollStructure(models.Model):
@@ -39,3 +40,14 @@ class PayrollStructure(models.Model):
                 'condition_field': rule.condition_field,
             }))
         return vals
+
+    @api.onchange('name')
+    def _onchange_name_suggest_structure_code(self):
+        if self.name:
+            suggested_code = self.name.strip().upper()
+
+            suggested_code = re.sub(r'[\s\-]+', '_', suggested_code)
+
+            suggested_code = re.sub(r'[^A-Z0-9_]', '', suggested_code)
+
+            self.code = suggested_code

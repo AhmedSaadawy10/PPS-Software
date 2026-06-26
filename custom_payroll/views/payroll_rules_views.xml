@@ -9,7 +9,6 @@
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="code"/>
-                <field name="struct_id"/>
                 <field name="category"/>
                 <field name="amount_type"/>
             </list>
@@ -24,7 +23,9 @@
                 <sheet>
                     <div class="oe_title">
                         <label for="name"/>
-                        <h1><field name="name" placeholder="e.g. Basic Salary"/></h1>
+                        <h1>
+                            <field name="name" placeholder="e.g. Basic Salary"/>
+                        </h1>
                     </div>
                     <group>
                         <group>
@@ -37,17 +38,15 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Condition" name="condition">
+                        <page string="Calculation Rules" name="calculation_rules">
                             <group>
-                                <field name="condition_field" widget="ace" options="{'mode': 'python'}"/>
-                            </group>
-                        </page>
-                        <page string="Computation" name="computation">
-                            <group>
-                                <field name="amount_type"/>
-                                <field name="amount_fix" invisible="amount_type != 'fixed'"/>
-                                <field name="amount_percentage" invisible="amount_type != 'percentage'"/>
-                                <field name="amount_python_code" invisible="amount_type != 'code'" widget="ace" options="{'mode': 'python'}"/>
+                                <group string="Amount Configuration">
+                                    <field name="amount_type"/>
+                                    <field name="amount_fix" invisible="amount_type != 'fixed'"/>
+                                    <field name="amount_percentage" invisible="amount_type != 'percentage'"/>
+                                    <field name="amount_python_code" invisible="amount_type != 'code'" widget="ace"
+                                           options="{'mode': 'python'}"/>
+                                </group>
                             </group>
                         </page>
                     </notebook>

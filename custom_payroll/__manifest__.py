@@ -14,7 +14,7 @@
         'views/payroll_contract_views.xml',
         'views/payroll_rules_views.xml',
         'views/payroll_structure_views.xml',
-        # 'views/payroll_menus.xml',
+        'views/payroll_payslip_views.xml',
     ],
     'installable': True,
     'application': True,

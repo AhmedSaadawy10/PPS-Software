@@ -20,4 +20,9 @@
               name="Salary Structure"
               parent="menu_custom_payroll_root"
               sequence="15"/>
+
+    <menuitem id="menu_payroll_payslip"
+              name="Payslip"
+              parent="menu_custom_payroll_root"
+              sequence="20"/>
 </odoo>

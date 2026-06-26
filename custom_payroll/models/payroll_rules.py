@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from odoo.tools.translate import _
+import re
 
 
 class PayrollRule(models.Model):
@@ -10,7 +11,7 @@ class PayrollRule(models.Model):
 
     name = fields.Char(string='Rule Name', required=True, tracking=True)
     code = fields.Char(string='Rule Code', required=True, tracking=True)
-    struct_id = fields.Many2one('payroll.structure', string="Salary Structure", required=True, ondelete='cascade')
+    struct_id = fields.Many2one('payroll.structure', string="Salary Structure", ondelete='cascade')
     sequence = fields.Integer(string='Sequence', default=5, required=True, index=True)
     active = fields.Boolean(default=True)
 
@@ -32,14 +33,17 @@ class PayrollRule(models.Model):
     amount_percentage = fields.Float(string='Percentage of Wage (%)')
     amount_python_code = fields.Text(string='Python Code', default="result = 0.0")
 
-    # حقل الشرط الصريح والوحيد المطلوب لتحديد هل تطبق القاعدة أم لا
-    condition_field = fields.Text(
-        string='Condition (Python Code)',
-        required=True,
-        default="result = True",
-        help="Python expression to decide if the rule applies. Must set 'result' to True or False."
-    )
-
     _sql_constraints = [
         ('code_unique', 'unique(code)', 'The Rule Code must be unique across the payroll system!')
     ]
+
+    @api.onchange('name')
+    def _onchange_name_suggest_code(self):
+        if self.name:
+            suggested_code = self.name.strip().upper()
+
+            suggested_code = re.sub(r'[\s\-]+', '_', suggested_code)
+
+            suggested_code = re.sub(r'[^A-Z0-9_]', '', suggested_code)
+
+            self.code = suggested_code

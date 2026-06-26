@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
-    <!--Category-->
+        <!--Category-->
         <record model="ir.module.category" id="module_category_custom_payroll">
             <field name="name">Custom Payroll</field>
             <field name="sequence">20</field>
@@ -25,7 +25,7 @@
             <field name="user_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
         </record>
 
-    <!--===========================Record Rules========================================-->
+        <!--===========================Record Rules========================================-->
         <!--payroll contract -->
         <record id="payroll_contract_rule_employee" model="ir.rule">
             <field name="name">Employee: See Own Contracts Only</field>
@@ -46,7 +46,23 @@
         </record>
 
 
+        <!--        payroll payslips-->
+        <record id="payroll_payslip_rule_employee" model="ir.rule">
+            <field name="name">Employee: See Own Payslips Only</field>
+            <field name="model_id" ref="model_payroll_payslip"/>
+            <field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_payroll_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
 
-
+        <record id="payroll_payslip_rule_manager" model="ir.rule">
+            <field name="name">Manager: See All Payslips</field>
+            <field name="model_id" ref="model_payroll_payslip"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_payroll_manager'))]"/>
+        </record>
     </data>
 </odoo>

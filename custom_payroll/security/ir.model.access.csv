@@ -5,3 +5,7 @@ access_payroll_structure_manager,payroll.contract.manager,model_payroll_structur
 access_payroll_structure_user,payroll.contract.user,model_payroll_structure,group_payroll_user,1,0,0,0
 access_payroll_rule_manager,payroll.contract.manager,model_payroll_rule,group_payroll_manager,1,1,1,1
 access_payroll_rule_user,payroll.contract.user,model_payroll_rule,group_payroll_user,1,0,0,0
+access_payroll_payslip_manager,payroll.payslip.manager,model_payroll_payslip,group_payroll_manager,1,1,1,1
+access_payroll_payslip_user,payroll.payslip.user,model_payroll_payslip,group_payroll_user,1,0,0,0
+access_payroll_payslip_line_manager,payroll.payslip.line.manager,model_payroll_payslip_line,group_payroll_manager,1,1,1,1
+access_payroll_payslip_line_user,payroll.payslip.line.user,model_payroll_payslip_line,group_payroll_user,1,0,0,0
