@@ -33,6 +33,16 @@ class PayrollRule(models.Model):
     amount_percentage = fields.Float(string='Percentage of Wage (%)')
     amount_python_code = fields.Text(string='Python Code', default="result = 0.0")
 
+    condition_select = fields.Selection([
+        ('always', 'Always True'),
+        ('range', 'Range Check'),
+        ('python', 'Python Expression')
+    ], string='Condition Type', default='always', required=True, tracking=True)
+    condition_range_field = fields.Char(string='Range Field', default='contract.wage', tracking=True)
+    condition_range_min = fields.Float(string='Minimum Range', tracking=True)
+    condition_range_max = fields.Float(string='Maximum Range', tracking=True)
+    condition_python_code = fields.Text(string='Python Condition Code', default="result = True")
+
     _sql_constraints = [
         ('code_unique', 'unique(code)', 'The Rule Code must be unique across the payroll system!')
     ]

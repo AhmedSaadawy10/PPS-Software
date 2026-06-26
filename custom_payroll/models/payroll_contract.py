@@ -18,7 +18,7 @@ class PayrollContract(models.Model):
         required=True,
         tracking=True,
         help="Employee's monthly gross wage.",
-        group_operator="avg"
+        aggregator="avg"
     )
     company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company)
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id')

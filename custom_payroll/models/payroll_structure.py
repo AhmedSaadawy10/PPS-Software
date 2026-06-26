@@ -37,7 +37,11 @@ class PayrollStructure(models.Model):
                 'amount_fix': rule.amount_fix,
                 'amount_percentage': rule.amount_percentage,
                 'amount_python_code': rule.amount_python_code,
-                'condition_field': rule.condition_field,
+                'condition_select': rule.condition_select,
+                'condition_range_field': rule.condition_range_field,
+                'condition_range_min': rule.condition_range_min,
+                'condition_range_max': rule.condition_range_max,
+                'condition_python_code': rule.condition_python_code,
             }))
         return vals
 
