@@ -8,27 +8,15 @@ class PayrollStructure(models.Model):
     _description = 'Salary Structure'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    name = fields.Char(string='Structure Name', required=True, tracking=True)
-    code = fields.Char(string='Structure Code', required=True, tracking=True)
-    active = fields.Boolean(default=True, tracking=True)
-    note = fields.Text(string='Description')
-    rule_ids = fields.One2many(
-        'payroll.rule', 'struct_id',
-        string='Salary Rules', copy=True, default=lambda self: self._get_default_rule_ids()
-    )
-
-    _sql_constraints = [
-        ('code_unique', 'unique(code)', 'The Structure Code must be unique!')
-    ]
-
     @api.model
     def _get_default_rule_ids(self):
-        existing_rules = self.env['payroll.rule'].search([('active', '=', True)], limit=10)
-        if not existing_rules:
+        default_structure = self.env.ref('custom_payroll.default_payroll_structure', False)
+
+        if not default_structure or not default_structure.rule_ids:
             return []
-        vals = []
-        for rule in existing_rules:
-            vals.append((0, 0, {
+
+        vals = [
+            (0, 0, {
                 'name': rule.name,
                 'code': rule.code,
                 'sequence': rule.sequence,
@@ -42,8 +30,23 @@ class PayrollStructure(models.Model):
                 'condition_range_min': rule.condition_range_min,
                 'condition_range_max': rule.condition_range_max,
                 'condition_python_code': rule.condition_python_code,
-            }))
+            }) for rule in default_structure.rule_ids
+        ]
         return vals
+
+    name = fields.Char(string='Structure Name', required=True, tracking=True)
+    code = fields.Char(string='Structure Code', required=True, tracking=True)
+    active = fields.Boolean(default=True, tracking=True)
+    note = fields.Text(string='Description')
+    rule_ids = fields.One2many(
+        'payroll.rule', 'struct_id',
+        string='Salary Rules', copy=True, default=_get_default_rule_ids
+    )
+
+    _code_unique = models.Constraint(
+        'unique(code)',
+        'The Structure Code must be unique!'
+    )
 
     @api.onchange('name')
     def _onchange_name_suggest_structure_code(self):

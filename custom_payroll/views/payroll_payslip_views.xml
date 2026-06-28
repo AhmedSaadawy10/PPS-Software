@@ -65,6 +65,17 @@
                                 </list>
                             </field>
                         </page>
+                        <page string="Worked Days" name="worked_days">
+                            <field name="worked_days_line_ids" readonly="state != 'draft'">
+                                <list string="Worked Days" editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="code"/>
+                                    <field name="number_of_days" sum="Total Days"/>
+                                    <field name="number_of_hours" sum="Total Hours"/>
+                                </list>
+                            </field>
+                        </page>
                     </notebook>
                 </sheet>
                 <chatter/>

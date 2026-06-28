@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="default_payroll_structure" model="payroll.structure">
+            <field name="name">Default Structure Rules Set</field>
+            <field name="code">DEFAULT_STRUCTURE</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="default_rule_basic" model="payroll.rule">
+            <field name="name">Basic Salary</field>
+            <field name="code">BASIC</field>
+            <field name="category">basic</field>
+            <field name="sequence">10</field>
+            <field name="amount_type">percentage</field>
+            <field name="amount_percentage">100.00</field>
+            <field name="condition_select">always</field>
+            <field name="struct_id" ref="default_payroll_structure"/>
+        </record>
+
+        <!-- Demo Employee 1 (Monthly) -->
+        <record id="employee_demo_monthly" model="hr.employee">
+            <field name="name">John Doe (Monthly Demo)</field>
+        </record>
+
+        <!-- Demo Contract 1 (Monthly) -->
+        <record id="contract_demo_monthly" model="x_payroll.contract">
+            <field name="name">Contract - John Doe</field>
+            <field name="employee_id" ref="employee_demo_monthly"/>
+            <field name="struct_id" ref="default_payroll_structure"/>
+            <field name="wage">4000.00</field>
+            <field name="schedule_pay">monthly</field>
+            <field name="date_start">2026-06-01</field>
+            <field name="state">running</field>
+        </record>
+
+        <!-- Demo Employee 2 (Weekly) -->
+        <record id="employee_demo_weekly" model="hr.employee">
+            <field name="name">Jane Smith (Weekly Demo)</field>
+        </record>
+
+        <!-- Demo Contract 2 (Weekly) -->
+        <record id="contract_demo_weekly" model="x_payroll.contract">
+            <field name="name">Contract - Jane Smith</field>
+            <field name="employee_id" ref="employee_demo_weekly"/>
+            <field name="struct_id" ref="default_payroll_structure"/>
+            <field name="wage">3000.00</field>
+            <field name="schedule_pay">weekly</field>
+            <field name="date_start">2026-06-01</field>
+            <field name="state">running</field>
+        </record>
+
+        <record id="default_rule_hra" model="payroll.rule">
+            <field name="name">Housing Allowance</field>
+            <field name="code">HRA</field>
+            <field name="category">allowance</field>
+            <field name="sequence">20</field>
+            <field name="amount_type">percentage</field>
+            <field name="amount_percentage">25.00</field>
+            <field name="condition_select">always</field>
+            <field name="struct_id" ref="default_payroll_structure"/>
+        </record>
+
+        <record id="default_rule_gross" model="payroll.rule">
+            <field name="name">Gross Salary</field>
+            <field name="code">GROSS</field>
+            <field name="category">gross</field>
+            <field name="sequence">100</field>
+            <field name="amount_type">code</field>
+            <field name="amount_python_code">result = categories.get('basic', 0.0) + categories.get('allowance', 0.0)</field>
+            <field name="condition_select">always</field>
+            <field name="struct_id" ref="default_payroll_structure"/>
+        </record>
+
+        <record id="default_rule_gosi" model="payroll.rule">
+            <field name="name">GOSI Deduction</field>
+            <field name="code">GOSI</field>
+            <field name="category">deduction</field>
+            <field name="sequence">120</field>
+            <field name="amount_type">code</field>
+            <field name="amount_python_code">result = categories.get('basic', 0.0) * 0.10</field>
+            <field name="condition_select">always</field>
+            <field name="struct_id" ref="default_payroll_structure"/>
+        </record>
+
+        <record id="default_rule_net" model="payroll.rule">
+            <field name="name">Net Salary</field>
+            <field name="code">NET</field>
+            <field name="category">net</field>
+            <field name="sequence">200</field>
+            <field name="amount_type">code</field>
+            <field name="amount_python_code">result = categories.get('gross', 0.0) - categories.get('deduction', 0.0)</field>
+            <field name="condition_select">always</field>
+            <field name="struct_id" ref="default_payroll_structure"/>
+        </record>
+
+    </data>
+</odoo>

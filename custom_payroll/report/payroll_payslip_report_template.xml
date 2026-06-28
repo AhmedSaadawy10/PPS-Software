@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_payslip_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333;">
+                        <div class="row mb-4">
+                            <div class="col-12 text-center">
+                                <h2 style="font-weight: bold; color: #2C3E50; border-bottom: 2px solid #BDC3C7; padding-bottom: 10px;">
+                                    EMPLOYEE PAYSLIP
+                                </h2>
+                                <h5 class="text-muted" t-field="o.name"/>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4" style="background-color: #F8F9FA; border: 1px solid #E2E8F0; padding: 15px; border-radius: 5px;">
+                            <div class="col-6">
+                                <table class="table table-sm table-borderless mb-0">
+                                    <tr>
+                                        <td style="font-weight: bold; width: 35%;">Employee Name:</td>
+                                        <td><span t-field="o.employee_id.name"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold;">Job Position:</td>
+                                        <td><span t-field="o.employee_id.job_title"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold;">Department:</td>
+                                        <td><span t-field="o.employee_id.department_id.name"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-6">
+                                <table class="table table-sm table-borderless mb-0">
+                                    <tr>
+                                        <td style="font-weight: bold; width: 35%;">Contract Ref:</td>
+                                        <td><span t-field="o.contract_id.name"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold;">Salary Structure:</td>
+                                        <td><span t-field="o.structure_id.name"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold;">Pay Period:</td>
+                                        <td>
+                                            <span t-field="o.date_from"/> to <span t-field="o.date_to"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <h4 style="color: #2C3E50; font-weight: bold; margin-top: 20px;">Salary Computation</h4>
+                        <table class="table table-bordered table-sm" style="border: 1px solid #E2E8F0;">
+                            <thead style="background-color: #F1F5F9; color: #1E293B; border-bottom: 2px solid #CBD5E1;">
+                                <tr>
+                                    <th class="text-left" style="width: 15%; padding: 8px; font-weight: bold;">Code</th>
+                                    <th class="text-left" style="width: 50%; padding: 8px; font-weight: bold;">Salary Rule Name</th>
+                                    <th class="text-center" style="width: 15%; padding: 8px; font-weight: bold;">Category</th>
+                                    <th class="text-right" style="width: 20%; padding: 8px; font-weight: bold;">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="['basic', 'allowance', 'deduction', 'gross', 'net']" t-as="cat">
+                                    <t t-set="lines" t-value="o.line_ids.filtered(lambda l: l.category == cat)"/>
+                                    <t t-if="lines">
+                                        <tr style="background-color: #F8FAFC; font-weight: bold;">
+                                            <td colspan="3" style="text-transform: uppercase; color: #64748B; padding-left: 10px;">
+                                                <span t-esc="cat"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <t t-if="cat in ['basic', 'allowance', 'gross', 'net']">
+                                                    <span t-esc="sum(lines.mapped('total'))" t-options='{"widget": "monetary", "display_currency": o.contract_id.currency_id}' style="color: #1E293B;"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <span t-esc="sum(lines.mapped('total'))" t-options='{"widget": "monetary", "display_currency": o.contract_id.currency_id}' style="color: #DF4747;"/>
+                                                </t>
+                                            </td>
+                                        </tr>
+                                        <t t-foreach="lines" t-as="line">
+                                            <tr>
+                                                <td class="text-left" style="padding-left: 15px; color: #475569;"><span t-field="line.code"/></td>
+                                                <td class="text-left" style="color: #334155;"><span t-field="line.name"/></td>
+                                                <td class="text-center" style="text-transform: capitalize; color: #64748B;"><span t-field="line.category"/></td>
+                                                <td class="text-right" style="font-weight: 500;">
+                                                    <t t-if="line.category == 'deduction'">
+                                                        <span t-field="line.total" t-options='{"widget": "monetary", "display_currency": o.contract_id.currency_id}' style="color: #DF4747;"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <span t-field="line.total" t-options='{"widget": "monetary", "display_currency": o.contract_id.currency_id}' style="color: #334155;"/>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <div class="row mt-4 justify-content-end">
+                            <div class="col-5">
+                                <div style="border: 1px solid #CBD5E1; border-radius: 5px; padding: 15px; background-color: #F8FAFC;">
+                                    <table class="table table-sm table-borderless mb-0">
+                                        <tr style="border-bottom: 1px solid #E2E8F0;">
+                                            <td style="font-weight: bold; font-size: 1.1em; color: #334155;">Gross Salary:</td>
+                                            <td class="text-right" style="font-weight: bold; font-size: 1.1em; color: #334155;">
+                                                <span t-field="o.gross_total" t-options='{"widget": "monetary", "display_currency": o.contract_id.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                        <tr style="border-bottom: 1px solid #E2E8F0;">
+                                            <td style="font-weight: bold; font-size: 1.1em; color: #DF4747;">Total Deductions:</td>
+                                            <td class="text-right" style="font-weight: bold; font-size: 1.1em; color: #DF4747;">
+                                                <span t-esc="o.gross_total - o.net_total" t-options='{"widget": "monetary", "display_currency": o.contract_id.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                        <tr style="background-color: #E2E8F0; color: #0F172A; border-radius: 3px;">
+                                            <td style="font-weight: bold; font-size: 1.2em; padding: 8px;">NET TAKE HOME:</td>
+                                            <td class="text-right" style="font-weight: bold; font-size: 1.2em; padding: 8px;">
+                                                <span t-field="o.net_total" t-options='{"widget": "monetary", "display_currency": o.contract_id.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-5 pt-5" style="border-top: 1px dashed #E2E8F0;">
+                            <div class="col-6 text-center" style="color: #475569;">
+                                <p style="margin-bottom: 60px;">Employer Representative Signature</p>
+                                ___________________________________
+                            </div>
+                            <div class="col-6 text-center" style="color: #475569;">
+                                <p style="margin-bottom: 60px;">Employee Acknowledgment Signature</p>
+                                ___________________________________
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

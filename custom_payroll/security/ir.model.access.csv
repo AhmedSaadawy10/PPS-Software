@@ -9,3 +9,7 @@ access_payroll_payslip_manager,payroll.payslip.manager,model_payroll_payslip,gro
 access_payroll_payslip_user,payroll.payslip.user,model_payroll_payslip,group_payroll_user,1,0,0,0
 access_payroll_payslip_line_manager,payroll.payslip.line.manager,model_payroll_payslip_line,group_payroll_manager,1,1,1,1
 access_payroll_payslip_line_user,payroll.payslip.line.user,model_payroll_payslip_line,group_payroll_user,1,0,0,0
+access_payroll_run_manager,payroll.run.manager,model_payroll_run,group_payroll_manager,1,1,1,1
+access_payroll_run_user,payroll.run.user,model_payroll_run,group_payroll_user,1,0,0,0
+access_payroll_payslip_worked_days_manager,payroll.payslip.worked_days.manager,model_payroll_payslip_worked_days,group_payroll_manager,1,1,1,1
+access_payroll_payslip_worked_days_user,payroll.payslip.worked_days.user,model_payroll_payslip_worked_days,group_payroll_user,1,0,0,0

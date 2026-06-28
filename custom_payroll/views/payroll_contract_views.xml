@@ -6,18 +6,22 @@
         <field name="name">x_payroll.contract.list</field>
         <field name="model">x_payroll.contract</field>
         <field name="arch" type="xml">
-            <list string="Contracts" decoration-info="state == 'draft'" decoration-success="state == 'running'" decoration-muted="state == 'expired'">
+            <list string="Contracts" decoration-info="state == 'draft'" decoration-success="state == 'running'"
+                  decoration-muted="state == 'expired'">
                 <field name="name"/>
                 <field name="employee_id"/>
+                <field name="struct_id"/>
+                <field name="schedule_pay"/>
                 <field name="date_start"/>
                 <field name="date_end"/>
                 <field name="wage"/>
-                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-success="state == 'running'"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'"
+                       decoration-success="state == 'running'"/>
             </list>
         </field>
     </record>
 
-<!--    form view-->
+    <!--    form view-->
     <record id="view_payroll_contract_form" model="ir.ui.view">
         <field name="name">x_payroll.contract.form</field>
         <field name="model">x_payroll.contract</field>
@@ -38,13 +42,16 @@
 
                             <label for="wage"/>
                             <div class="o_row mw-50" name="wage">
-                                <field name="wage" class="oe_inline o_hr_narrow_field" nolabel="1" readonly="state == 'cancelled'"/>
+                                <field name="wage" class="oe_inline o_hr_narrow_field" nolabel="1"
+                                       readonly="state == 'cancelled'"/>
                                 <div class="mb-3" name="wage_period_label">/ month</div>
                             </div>
 
                             <field name="currency_id" invisible="True"/>
                         </group>
                         <group>
+                            <field name="struct_id"/>
+                            <field name="schedule_pay" readonly="state != 'draft'"/>
                             <field name="date_start" readonly="state != 'draft'"/>
                             <field name="date_end" readonly="state in ['expired', 'cancelled']"/>
                             <field name="company_id" groups="base.group_multi_company" invisible="true"/>
@@ -56,7 +63,7 @@
         </field>
     </record>
 
-<!--    action window-->
+    <!--    action window-->
     <record id="action_payroll_contract" model="ir.actions.act_window">
         <field name="name">Contracts</field>
         <field name="res_model">x_payroll.contract</field>

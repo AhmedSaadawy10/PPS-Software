@@ -11,6 +11,7 @@ class PayrollContract(models.Model):
     name = fields.Char(string='Contract Reference', required=True, copy=False,
                        default=lambda self: _('New'), tracking=True)
     employee_id = fields.Many2one('hr.employee', string='Employee', index=True, required=True, ondelete='cascade', tracking=True)
+    struct_id = fields.Many2one('payroll.structure', string='Salary Structure', required=True, tracking=True)
     date_start = fields.Date(string='Start Date', required=True, default=fields.Date.today, tracking=True)
     date_end = fields.Date(string='End Date', tracking=True)
     wage = fields.Monetary(
@@ -20,6 +21,12 @@ class PayrollContract(models.Model):
         help="Employee's monthly gross wage.",
         aggregator="avg"
     )
+    schedule_pay = fields.Selection([
+        ('monthly', 'Monthly'),
+        ('weekly', 'Weekly'),
+        ('bi-weekly', 'Bi-weekly'),
+        ('semi-monthly', 'Semi-monthly'),
+    ], string='Scheduled Pay', default='monthly', required=True, tracking=True)
     company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company)
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id')
 

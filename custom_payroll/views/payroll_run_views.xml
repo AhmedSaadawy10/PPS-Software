@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- List View -->
+    <record id="view_payroll_run_list" model="ir.ui.view">
+        <field name="name">payroll.run.list</field>
+        <field name="model">payroll.run</field>
+        <field name="arch" type="xml">
+            <list string="Payroll Runs">
+                <field name="name"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="total_employees" string="Employees"/>
+                <field name="total_gross" string="Total Gross" widget="monetary"/>
+                <field name="total_net" string="Total Net" widget="monetary"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'"
+                       decoration-warning="state == 'verify'" decoration-success="state == 'done'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_payroll_run_form" model="ir.ui.view">
+        <field name="name">payroll.run.form</field>
+        <field name="model">payroll.run</field>
+        <field name="arch" type="xml">
+            <form string="Payroll Run">
+                <header>
+                    <button name="action_generate_payslips" string="Generate &amp; Compute Payslips" type="object"
+                            invisible="state != 'draft'" class="oe_highlight"/>
+                    <button name="action_done" string="Mark Done" type="object"
+                            invisible="state != 'verify'" class="oe_highlight"/>
+                    <button name="action_close" string="Close Run" type="object"
+                            invisible="state != 'done'" class="oe_highlight"/>
+                    <button name="action_draft" string="Set to Draft" type="object"
+                            invisible="state not in ['verify', 'close']"/>
+                    <button name="action_print_payslips" string="Print All Payslips" type="object"
+                            invisible="state == 'draft'" class="btn-secondary"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,verify,done,close"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_payslips" type="object" class="oe_stat_button" icon="fa-money">
+                            <field name="payslip_count" widget="statinfo" string="Payslips"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="state != 'draft'" placeholder="June 2026 Batch"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date_start" readonly="state != 'draft'"/>
+                            <field name="date_end" readonly="state != 'draft'"/>
+                        </group>
+                        <group>
+                            <field name="employee_ids" widget="many2many_tags" readonly="state != 'draft'"/>
+                            <field name="company_id" groups="base.group_multi_company" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="total_employees" invisible="1"/>
+                            <field name="total_gross" invisible="1"/>
+                            <field name="total_deductions" invisible="1"/>
+                            <field name="total_net" invisible="1"/>
+                        </group>
+                    </group>
+
+                    <!--                     OWL Dashboard summary component (Phase 3) -->
+                    <div class="mb-4">
+                        <widget name="payroll_summary"/>
+                    </div>
+
+                    <notebook>
+                        <page string="Payslips" name="payslips">
+                            <field name="payslip_ids" readonly="1">
+                                <list string="Payslips" create="false" delete="false">
+                                    <field name="name"/>
+                                    <field name="employee_id"/>
+                                    <field name="contract_id"/>
+                                    <field name="gross_total" sum="Total Gross"/>
+                                    <field name="net_total" sum="Total Net"/>
+                                    <field name="state" widget="badge" decoration-info="state == 'draft'"
+                                           decoration-warning="state == 'verify'" decoration-success="state == 'done'"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Window Action -->
+    <record id="action_payroll_run" model="ir.actions.act_window">
+        <field name="name">Payroll Runs</field>
+        <field name="res_model">payroll.run</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first batch payroll run!
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item -->
+    <menuitem id="menu_payroll_run_action"
+              name="Batches"
+              parent="menu_payroll_payslip"
+              action="action_payroll_run"
+              sequence="50"
+              groups="group_payroll_manager"/>
+
+</odoo>

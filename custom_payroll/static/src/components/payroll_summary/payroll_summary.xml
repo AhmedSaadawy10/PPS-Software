@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="custom_payroll.PayrollSummary">
+        <div class="row row-cols-1 row-cols-md-4 g-3 mb-4 mt-2">
+            <!-- Card 1: Total Employees -->
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm" style="background-color: #EBF3FC; border-left: 5px solid #1D70B8 !important; border-radius: 6px;">
+                    <div class="card-body py-3 px-4 d-flex align-items-center">
+                        <div class="me-3 p-3 bg-white rounded-circle shadow-sm" style="color: #1D70B8; font-size: 1.5em; width: 55px; height: 55px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa fa-users"/>
+                        </div>
+                        <div>
+                            <h6 class="card-subtitle text-muted mb-1" style="font-size: 0.85em; font-weight: 600;">Total Employees</h6>
+                            <h4 class="card-title mb-0" style="color: #1D70B8; font-weight: 700; font-size: 1.6em;">
+                                <t t-esc="totalEmployees"/>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 2: Total Gross -->
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm" style="background-color: #FFF9EB; border-left: 5px solid #F5A623 !important; border-radius: 6px;">
+                    <div class="card-body py-3 px-4 d-flex align-items-center">
+                        <div class="me-3 p-3 bg-white rounded-circle shadow-sm" style="color: #F5A623; font-size: 1.5em; width: 55px; height: 55px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa fa-money-bill-wave"/>
+                        </div>
+                        <div>
+                            <h6 class="card-subtitle text-muted mb-1" style="font-size: 0.85em; font-weight: 600;">Total Gross</h6>
+                            <h4 class="card-title mb-0" style="color: #F5A623; font-weight: 700; font-size: 1.6em;">
+                                <t t-esc="totalGross"/>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 3: Total Deductions -->
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm" style="background-color: #FDEDEC; border-left: 5px solid #E74C3C !important; border-radius: 6px;">
+                    <div class="card-body py-3 px-4 d-flex align-items-center">
+                        <div class="me-3 p-3 bg-white rounded-circle shadow-sm" style="color: #E74C3C; font-size: 1.5em; width: 55px; height: 55px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa fa-minus-circle"/>
+                        </div>
+                        <div>
+                            <h6 class="card-subtitle text-muted mb-1" style="font-size: 0.85em; font-weight: 600;">Total Deductions</h6>
+                            <h4 class="card-title mb-0" style="color: #E74C3C; font-weight: 700; font-size: 1.6em;">
+                                <t t-esc="totalDeductions"/>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 4: Total Net -->
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm" style="background-color: #EAF2F1; border-left: 5px solid #2ECC71 !important; border-radius: 6px;">
+                    <div class="card-body py-3 px-4 d-flex align-items-center">
+                        <div class="me-3 p-3 bg-white rounded-circle shadow-sm" style="color: #2ECC71; font-size: 1.5em; width: 55px; height: 55px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa fa-wallet"/>
+                        </div>
+                        <div>
+                            <h6 class="card-subtitle text-muted mb-1" style="font-size: 0.85em; font-weight: 600;">Total Net (Take-Home)</h6>
+                            <h4 class="card-title mb-0" style="color: #2ECC71; font-weight: 700; font-size: 1.6em;">
+                                <t t-esc="totalNet"/>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

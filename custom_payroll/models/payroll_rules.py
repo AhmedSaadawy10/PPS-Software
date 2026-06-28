@@ -43,9 +43,10 @@ class PayrollRule(models.Model):
     condition_range_max = fields.Float(string='Maximum Range', tracking=True)
     condition_python_code = fields.Text(string='Python Condition Code', default="result = True")
 
-    _sql_constraints = [
-        ('code_unique', 'unique(code)', 'The Rule Code must be unique across the payroll system!')
-    ]
+    _code_unique = models.Constraint(
+        'unique(code)',
+        'The Rule Code must be unique across the payroll system!'
+    )
 
     @api.onchange('name')
     def _onchange_name_suggest_code(self):
